@@ -1,0 +1,33 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://*******/**?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: *
+    password: *
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    redis:
+      port: *
+      host: *
+      jedis:
+        pool:
+            # 连接池最大连接数（使用负值表示没有限制）
+          max-active: 200
+            # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: 1800
+            # 连接池中的最大空闲连接
+          max-idle: 10
+            # 连接池中的最小空闲连接z
+          min-idle: 0
+            # 连接超时时间毫秒
+          timeout: 3000
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+#微信通知wehook地址
+wx:
+  wehook: *
+#  天气通知的key
+weather:
+  key: *

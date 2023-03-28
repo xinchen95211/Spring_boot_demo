@@ -1,15 +1,18 @@
 package com.example.spring_boot_demo.sex.weather;
 
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class weather {
-    static final String nowapi = "https://devapi.qweather.com/v7/weather/now?location=101020300&key=135be044fcf841fd8b43b9064e712bff";
-    static final String onedapi = "https://devapi.qweather.com/v7/weather/24h?location=101020300&key=135be044fcf841fd8b43b9064e712bff";
-    static final String minutely = "https://devapi.qweather.com/v7/minutely/5m?location=116.38,39.91&key=135be044fcf841fd8b43b9064e712bff";
-    static final String threeapi = "https://devapi.qweather.com/v7/weather/3d?location=116.38,39.91&key=135be044fcf841fd8b43b9064e712bff";
+    @Value("${weather.key}")
+    private static String key;
+    static final String nowapi = "https://devapi.qweather.com/v7/weather/now?location=101020300&key="+key;
+    static final String onedapi = "https://devapi.qweather.com/v7/weather/24h?location=101020300&key="+key;
+    static final String minutely = "https://devapi.qweather.com/v7/minutely/5m?location=116.38,39.91&key="+key;
+    static final String threeapi = "https://devapi.qweather.com/v7/weather/3d?location=116.38,39.91&key="+key;
 
     public static String nowweather() {
         Stringutils string = getString(nowapi);

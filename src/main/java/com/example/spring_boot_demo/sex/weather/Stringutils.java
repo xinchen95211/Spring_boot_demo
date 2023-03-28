@@ -19,7 +19,7 @@ public class Stringutils {
         if (rule.contains(".")) {
             ArrayList<String> list = new ArrayList<>();
             String[] split = rule.split("\\.");
-            List<LinkedHashMap<String, String>> maps = null;
+            List<LinkedHashMap<String, String>> maps;
             try {
                 maps = (List<LinkedHashMap<String, String>>) jsonObject.get(split[0]);
             } catch (Exception e) {

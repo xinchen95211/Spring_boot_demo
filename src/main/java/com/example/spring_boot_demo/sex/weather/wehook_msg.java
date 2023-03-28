@@ -8,13 +8,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
 
 //微信消息推送
 public class wehook_msg {
-    private static final String wehook = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=b2d03e92-c43d-49b7-9a66-d7131e70b01c";
+
+    @Value("${wx.wehook}")
+    private static String wehook;
     private String msg;
 
     public wehook_msg(String msg) {
