@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 指定字符集 -->
+    <meta charset="utf-8">
+    <!-- 使用Edge最新的浏览器的渲染方式 -->
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!-- viewport视口：网页可以根据设置的宽度自动进行适配，在浏览器的内部虚拟一个容器，容器的宽度与设备的宽度相同。
+    width: 默认宽度与设备的宽度相同
+    initial-scale: 初始的缩放比，为1:1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>首页</title>
+    <!-- 1. 导入CSS的全局样式 -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+
+    <!-- 2. jQuery导入，建议使用1.9以上的版本 -->
+    <!--    <script src="https://resource.dynv6.net/jquery/jquery-3.6.1.min.js"></script>-->
+    <!-- 3. 导入bootstrap的js文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/index.js"></script>
+    <link href="css/index.css">
+
+    <style>
+        .related_box {
+            overflow: hidden;
+
+        }
+
+        .related_box img {
+            border: 3px solid #dadada;
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .related_box .r_title {
+            line-height: 20px;
+            height: 20%;
+            font-size: 15px;
+            overflow: hidden;
+            text-align: left;
+            color: #0a6cd6;
+        }
+
+        .related_boxindex img {
+            border: 3px solid #dadada;
+            width: 100%;
+        }
+
+        #imgrow li {
+            list-style: none;
+            padding: 7px;
+            height: 350px;
+        }
+
+
+        .demo-image__lazy {
+            height: 600px;
+            overflow-y: auto;
+        }
+
+
+    </style>
+
+
+</head>
+<body>
+
+<div id="app">
+    <!--    导航栏-->
+
+    <el-row type="flex" style="text-align: center;align-items: center">
+
+        <el-col :xs="6" :sm="3" :lg="2">
+            <el-link @click="drawer = true" icon="el-icon-guide">导航页</el-link>
+        </el-col>
+        <el-col :xs="17" :sm="20" :lg="21">
+            <p style="float:right;font-size:1px;color: #909399">*拖动进度条翻页</p>
+            <el-slider @change="change" v-model="currentPage" :min="1" :max="totalPage" v-if="totalPage!=1">
+            </el-slider>
+            <div> 共{{totalCount}}条数据,共{{totalPage}}页,当前第{{currentPage}}页</div>
+            <div style="margin-top: 15px;"></div>
+        </el-col>
+
+    </el-row>
+
+    <el-drawer
+            title="导航页"
+            :visible.sync="drawer"
+            direction="ltr"
+            :before-close="handleClose"
+            size="30"
+            style="text-align: center;align-items: center"
+    >
+        <el-input placeholder="请输入内容" v-model="search" class="input-with-select" clearable>
+            <el-button slot="append" icon="el-icon-search" @click="handleClick('photo')"></el-button>
+        </el-input>
+
+        <div v-for="item of tables">
+            <el-button @click="handleClick(item.tablesname)" style="width: 100%;height: 100%">
+                {{item.name}}
+            </el-button>
+            <br>
+        </div>
+    </el-drawer>
+
+    <!--    //图片展示-->
+    <el-row>
+        <el-col :spen="24">
+            <div class="row  " id="imgrow">
+                <li class="el-col-md-8 el-col-lg-4 el-col-12 el-sm-12 related_box" v-for="(item,i) of img_list">
+                    <a type="primary" @click="imgshow(item.id)">
+                        <img :src="item.thumbnail">
+                        <el-image hidden="hidden" :src="item.thumbnail">
+                            <div slot="placeholder" class="image-slot" v-loading="true"
+                                 style="width: 100% ;height: 200px;align-items:center;float: left">
+                                加载中<span class="dot">...</span>
+                            </div>
+                        </el-image>
+                        </img>
+                        <span class="r_title">{{item.name}}</span>
+                    </a>
+
+                </li>
+            </div>
+        </el-col>
+    </el-row>
+
+    <!--    以下为图篇内容的展示-->
+
+    <el-dialog
+            :visible.sync="dialogVisible"
+            width="80%"
+            :before-close="handleClose"
+    >
+
+        <div class="demo-image__lazy">
+            <div v-for="(url,i) in urls">
+                <el-image
+
+                        @load="imgload(i)"
+                        :key="url"
+                        :src="(prefix)+(suffix)+'/'+(url)"
+                        style="width: 100%"
+                        :preview-src-list="srcList"
+                        :initial-index="i"
+                >
+                    <div slot="placeholder" class="image-slot" v-loading="true" style="width: 100% ;height: 300px">
+                        加载中<span class="dot">...</span>
+                    </div>
+                </el-image>
+            </div>
+        </div>
+    </el-dialog>
+
+
+</div>
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                //
+                dialogVisible: false,
+                drawer: false,
+                //导航页数据
+                tables: '',
+                //图片展示数据
+                img_list: '',
+                //当前页码
+                currentPage: 1,
+                //总数
+                totalCount: 123,
+                //总页码
+                totalPage: 5,
+                //搜索的内容
+                search: '',
+                //当前页面的内容
+                table_name: 'photo',
+                //每页数量
+                rows: -1,
+                prefix: '',
+                suffix: '',
+                urls: '',
+                loadings: [],
+                srcList: [],
+
+            }
+        },
+        created() {
+            this.table();
+            this.imglist();
+        },
+        methods: {
+            imgload(i) {
+                this.loadings[i] = false;
+            },
+            load(i) {
+
+                this.loadings[i] = true;
+                console.log(i)
+
+
+            },
+            imgshow(id) {
+                let _this = this
+                this.urls = []
+                this.srcList = []
+                axios.get("https://1234560.dynv6.net/photo/" + id).then(function (res) {
+                    _this.urls = res.data.collection;
+
+                    console.log(res.data)
+                    _this.prefix = res.data.prefix;
+                    _this.suffix = res.data.suffix;
+
+                    for (let i = 0; i < res.data.collection.length; i++) {
+                        _this.srcList[i] = res.data.prefix + res.data.suffix + "/" + res.data.collection[i]
+                    }
+                }).catch(function (error) {
+                        console.log("error" + error)
+                        _this.imgshow(id);
+                    }
+                )
+
+
+                this.dialogVisible = true
+            },
+            //拖动滚动条翻页
+            change(e) {
+                this.imglist();
+            },
+            handleClose(done) {
+                done();
+            },
+            //导航页中的数据被选中
+            handleClick(tab) {
+                this.table_name = tab
+                this.currentPage = 1
+                this.imglist()
+            },
+            //tables加载
+            table() {
+                let _this = this
+                axios.get("https://1234560.dynv6.net/photo").then(function (res) {
+                    _this.tables = res.data;
+                }).catch(function (error) {
+                        console.log("error" + error)
+                        _this.table();
+                    }
+                )
+            },
+            //图片数据加载
+            imglist() {
+                let _this = this
+                axios.post("https://1234560.dynv6.net/photo", {
+                    "tables": _this.table_name,
+                    "search": _this.search,
+                    "row": _this.currentPage
+                }).then(function (res) {
+                    _this.img_list = res.data.records;
+                    console.log(_this.img_list)
+                    _this.totalCount = res.data.total;
+                    _this.totalPage = res.data.pages;
+                    _this.rows = res.data.current;
+                    // $("#nav").empty();
+                    // _this.showpager(_this.table_name,_this.currentPage,_this.totalPage);
+                }).catch(function (error) {
+                        console.log("error" + error)
+                        _this.imglist();
+                    }
+                )
+            },
+
+
+        },
+    })
+</script>
+</body>
+</html>
