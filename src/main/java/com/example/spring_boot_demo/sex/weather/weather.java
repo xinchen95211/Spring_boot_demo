@@ -2,19 +2,24 @@ package com.example.spring_boot_demo.sex.weather;
 
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Configuration
 public class weather {
     @Value("${weather.key}")
     private static String key;
-    static final String nowapi = "https://devapi.qweather.com/v7/weather/now?location=101020300&key="+key;
-    static final String onedapi = "https://devapi.qweather.com/v7/weather/24h?location=101020300&key="+key;
-    static final String minutely = "https://devapi.qweather.com/v7/minutely/5m?location=116.38,39.91&key="+key;
-    static final String threeapi = "https://devapi.qweather.com/v7/weather/3d?location=116.38,39.91&key="+key;
+
+    private static String nowapi = "https://devapi.qweather.com/v7/weather/now?location=101020300&key="+key;
+    private static String onedapi = "https://devapi.qweather.com/v7/weather/24h?location=101020300&key="+key;
+    static String minutely = "https://devapi.qweather.com/v7/minutely/5m?location=116.38,39.91&key="+key;
+    static String threeapi = "https://devapi.qweather.com/v7/weather/3d?location=116.38,39.91&key="+key;
 
     public static String nowweather() {
+
         Stringutils string = getString(nowapi);
         //现在天气状况
         Object text = string.get("now.text");
@@ -52,6 +57,7 @@ public class weather {
     }
 
     public static String minutelyweather() {
+        System.out.println(key);
         Stringutils string = getString(minutely);
         Object summary = string.get("summary");
         return summary + "\n";

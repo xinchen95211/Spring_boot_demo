@@ -1,5 +1,6 @@
 package com.example.spring_boot_demo;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,14 +11,18 @@ import com.example.spring_boot_demo.sex.Dao.GirlsMapper;
 import com.example.spring_boot_demo.sex.Dao.NineOneMapper;
 import com.example.spring_boot_demo.sex.Dao.OneMapper;
 import com.example.spring_boot_demo.sex.DoMain.OneUrl;
+import com.example.spring_boot_demo.sex.weather.WeatherUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 @SpringBootTest
 public class SpringBootDemoApplicationTests {
@@ -101,7 +106,55 @@ public class SpringBootDemoApplicationTests {
     }
 
     @Test
-    public void setPool() {
+    public void setPool() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String,Object> map = objectMapper.readValue("{\"code\":\"200\",\"location\":[{\"name\":\"宝山\",\"id\":\"101020300\",\"lat\":\"31.39890\",\"lon\":\"121.48994\",\"adm2\":\"上海\",\"adm1\":\"上海市\",\"country\":\"中国\",\"tz\":\"Asia/Shanghai\",\"utcOffset\":\"+08:00\",\"isDst\":\"0\",\"type\":\"city\",\"rank\":\"23\",\"fxLink\":\"https://www.qweather.com/weather/baoshan-101020300.html\"}],\"refer\":{\"sources\":[\"QWeather\"],\"license\":[\"QWeather Developers License\"]}}", Map.class);
+        ArrayList<Map<String,String>> code = (ArrayList<Map<String, String>>) map.get("location");
+        for (Map<String, String> stringStringMap : code) {
+            Set<Map.Entry<String, String>> entries = stringStringMap.entrySet();
+            for (Map.Entry<String, String> entry : entries) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                System.out.println(key + "+" +value);
+            }
+        }
+
+        System.out.println(code);
+
 
     }
+    @Test
+    public void jsouptext() throws IOException {
+
+        Document document = Jsoup.connect("https://devapi.qweather.com/v7/weather/now?location=121.48994,31.39890&key=135be044fcf841fd8b43b9064e712bff").ignoreContentType(true).get();
+        System.out.println(document);
+
+    }
+//    public void text() throws IOException {
+//
+//        BufferedReader fileReader = new BufferedReader(new FileReader("/Users/super/IdeaProjects/Spring_boot_demo/src/main/resources/q.txt"));
+//
+//        String name = "";
+//        while ((name = fileReader.readLine()) != null){
+//            LambdaQueryWrapper<PhotoTable> lam = new LambdaQueryWrapper<>();
+//            lam.eq(PhotoTable::getName,name);
+//            Long aLong = tableMapper.selectCount(lam);
+//            if (aLong > 1){
+//                List<PhotoTable> photoTables = tableMapper.selectList(lam);
+//                for (int i = 0; i < photoTables.size(); i++) {
+//                    if (i == 0){
+//                        continue;
+//                    }
+//                    tableMapper.deleteById(photoTables.get(i));
+//                }
+//            }
+//
+//
+//
+//        }
+//
+//
+//
+//
+//    }
 }

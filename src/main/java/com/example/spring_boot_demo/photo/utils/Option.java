@@ -6,6 +6,7 @@ import com.example.spring_boot_demo.photo.Dao.TableMapper;
 import com.example.spring_boot_demo.photo.DoMain.PhotoTable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 public class Option implements Runnable {
 
 
@@ -111,12 +113,12 @@ public class Option implements Runnable {
                             String s = obj.writeValueAsString(map);
                             photoTable.setJson(s);
                             tableMapper.insert(photoTable);
-                            System.out.println("添加成功");
+                            log.warn(name+"添加成功");
                         } catch (JsonProcessingException e) {
                             System.out.println(e);
                         }
                     } else {
-                        System.out.println(name + "跳过了");
+                        log.info(name + "跳过了");
                     }
                 }
                 page++;

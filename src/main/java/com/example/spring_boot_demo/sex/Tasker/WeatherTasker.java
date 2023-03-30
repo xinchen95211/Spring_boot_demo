@@ -1,7 +1,10 @@
 package com.example.spring_boot_demo.sex.Tasker;
 
+import com.example.spring_boot_demo.sex.weather.WeHook;
+import com.example.spring_boot_demo.sex.weather.WeatherApi;
 import com.example.spring_boot_demo.sex.weather.weather;
 import com.example.spring_boot_demo.sex.weather.wehook_msg;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -12,6 +15,10 @@ import java.io.IOException;
  * 天气通知开启类
  */
 public class WeatherTasker {
+    @Autowired
+    private WeHook weHook;
+    @Autowired
+    private WeatherApi weatherApi;
 
     /**
      * 数据库更新操作
@@ -31,45 +38,21 @@ public class WeatherTasker {
 //
 //
 //    }
-    @Scheduled(cron = "0 0 21 * * ?")
-//    @Scheduled(fixedRate = 864000L)
-    public void weather() {
-        String minutelyweather = weather.minutelyweather();
-        String s = "## 上海宝山\n**" + minutelyweather;
-        String threeapi = weather.threeweather();
-        wehook_msg wehook_msg = new wehook_msg(s + threeapi);
-        try {
-            wehook_msg.newmain();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-    }
+//    @Scheduled(cron = "0 0 21 * * ?")
+////    @Scheduled(fixedRate = 864000L)
+//    public void weather() {
+//
+//    }
 
     //    @Scheduled(fixedRate = 864000L)
     @Scheduled(cron = "59 59 * * * ?")
     public void now() {
-        String minutelyweather = weather.minutelyweather();
-        String s = "## 上海宝山\n**" + minutelyweather;
-        String nowweather = weather.nowweather();
-        wehook_msg wehooks_msg = new wehook_msg(s + nowweather);
-        try {
-            wehooks_msg.newmain();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        weHook.Toest_text(weatherApi.now_weather());
     }
 
     //    @Scheduled(fixedRate = 864000L)
     @Scheduled(cron = "0 30 6 * * ?")
     public void ondday() {
-        String minutelyweather = weather.minutelyweather();
-        String s = "## 上海宝山\n**" + minutelyweather;
-        String oneweather = weather.oneweather();
-        wehook_msg hooks = new wehook_msg(s + oneweather);
-        try {
-            hooks.newmain();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        weHook.Toest_text(weatherApi.today_weather());
     }
 }
