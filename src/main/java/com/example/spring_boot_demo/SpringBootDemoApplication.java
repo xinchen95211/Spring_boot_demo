@@ -22,9 +22,9 @@ public class SpringBootDemoApplication {
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.SHORT_IDS.get("CTT")));
         SpringApplication.run(SpringBootDemoApplication.class, args);
     }
-    //定时更新任务 6小时一次
+    //定时更新任务 1小时一次
 
-    @Scheduled(fixedRate = 60000L)
+    @Scheduled(fixedRate = 3600000L)
     public void th(){
         ExecutorService pool = EXecutorPool.getExecutorService();
         log.warn(pool.toString());

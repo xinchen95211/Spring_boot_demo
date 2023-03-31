@@ -4,6 +4,8 @@ import com.example.spring_boot_demo.sex.weather.WeHook;
 import com.example.spring_boot_demo.sex.weather.WeatherApi;
 import com.example.spring_boot_demo.sex.weather.weather;
 import com.example.spring_boot_demo.sex.weather.wehook_msg;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.io.IOException;
 
 @Configuration
+@Slf4j
 /**
  * 天气通知开启类
  */
@@ -45,11 +48,11 @@ public class WeatherTasker {
 //    }
 
     //    @Scheduled(fixedRate = 864000L)
-    @Scheduled(cron = "59 59 * * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 0 16 * * ?")
     public void now() {
         weHook.Toest_text(weatherApi.now_weather());
     }
-
     //    @Scheduled(fixedRate = 864000L)
     @Scheduled(cron = "0 30 6 * * ?")
     public void ondday() {
