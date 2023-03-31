@@ -25,6 +25,7 @@ public class SpringBootDemoApplication {
     //定时更新任务 1小时一次
 
     @Scheduled(fixedRate = 3600000L)
+//@Scheduled(fixedRate = 36000L)
     public void th(){
         ExecutorService pool = EXecutorPool.getExecutorService();
         log.warn(pool.toString());

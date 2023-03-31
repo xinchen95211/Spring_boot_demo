@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.spring_boot_demo.photo.Dao.TableMapper;
 import com.example.spring_boot_demo.photo.DoMain.PhotoTable;
+import com.example.spring_boot_demo.photo.config.EXecutorPool;
 import com.example.spring_boot_demo.photo.services.Table_Services;
 import com.example.spring_boot_demo.sex.Dao.GirlsMapper;
 import com.example.spring_boot_demo.sex.Dao.NineOneMapper;
@@ -17,14 +18,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.utils.HttpClientUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
 
 @SpringBootTest
 public class SpringBootDemoApplicationTests {
@@ -126,8 +131,16 @@ public class SpringBootDemoApplicationTests {
 
     }
     @Test
-    public void jsouptext() {
-//
+    public void jsouptext() throws IOException {
+//  ex
+        ExecutorService executorService = EXecutorPool.getExecutorService();
+        String top_url = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/";
+        Document parse = Jsoup.parse(new URL(top_url), 3000);
+        Elements tbody_a = parse.select("tbody td a");
+        for (Element element : tbody_a) {
+            System.out.println(element.text());
+        }
+        System.out.println(tbody_a.size());
 //        LambdaQueryWrapper<PhotoTable> qw = new LambdaQueryWrapper<>();
 //        qw.eq(PhotoTable::getName,"");
 //        qw.eq(PhotoTable::getTable_name,"photo");

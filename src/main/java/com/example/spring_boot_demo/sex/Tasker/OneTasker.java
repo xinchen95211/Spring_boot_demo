@@ -25,6 +25,7 @@ public class OneTasker {
     @Scheduled(cron = "* 30 5 * * ?")
     public void task() {
         red("https://yaoyao.dynv6.net/onedriveyaoyao/Aria2/");
+        red("https://yaoyao.dynv6.net/huifaguang/Aria2/");
     }
 
 
