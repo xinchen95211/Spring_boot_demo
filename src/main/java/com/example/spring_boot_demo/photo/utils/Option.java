@@ -1,7 +1,7 @@
 package com.example.spring_boot_demo.photo.utils;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.spring_boot_demo.photo.Dao.TableMapper;
 import com.example.spring_boot_demo.photo.DoMain.PhotoTable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,8 +50,8 @@ public class Option implements Runnable {
         String namesd = split[split.length - 1];
         if (namesd == null || namesd.equals("写真") || namesd.equals("%E5%86%99%E7%9C%9F")) {
             namesd = "photo";
-        }
 
+        }
         int page = 1;
         int id = 0;
         Document post_a = null;
@@ -65,9 +65,13 @@ public class Option implements Runnable {
                 for (Element element : select) {
                     //name
                     String name = element.html();
-                    QueryWrapper qw = new QueryWrapper<>().eq("name", name);
-                    PhotoTable photoTable_str = tableMapper.selectOne(qw);
-                    if (photoTable_str == null) {
+
+                    LambdaQueryWrapper<PhotoTable> qw = new LambdaQueryWrapper<>();
+                    qw.eq(PhotoTable::getName,name);
+                    qw.eq(PhotoTable::getTable_name,namesd);
+                    PhotoTable photoTablesf = tableMapper.selectOne(qw);
+
+                    if (photoTablesf == null) {
                         String namepath = element.attr("href").replace("/", "");
                         String suffix = URLEncoder.encode(namepath);
                         //后缀suffix
@@ -79,6 +83,7 @@ public class Option implements Runnable {
                         Document post_b = null;
                         do {
                             post_b = post(strs, pages);
+
 
                             Element tr1s = post_b.getElementById("tr1");
                             if (tr1s == null) {

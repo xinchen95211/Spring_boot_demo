@@ -14,6 +14,7 @@ import com.example.spring_boot_demo.sex.DoMain.OneUrl;
 import com.example.spring_boot_demo.sex.weather.WeatherUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.client.utils.HttpClientUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 @SpringBootTest
@@ -124,10 +126,16 @@ public class SpringBootDemoApplicationTests {
 
     }
     @Test
-    public void jsouptext() throws IOException {
+    public void jsouptext() {
+//
+//        LambdaQueryWrapper<PhotoTable> qw = new LambdaQueryWrapper<>();
+//        qw.eq(PhotoTable::getName,"");
+//        qw.eq(PhotoTable::getTable_name,"photo");
+//        Long count = tableMapper.selectCount(qw);
+//        System.out.println(count);
 
-        Document document = Jsoup.connect("https://devapi.qweather.com/v7/weather/now?location=121.48994,31.39890&key=135be044fcf841fd8b43b9064e712bff").ignoreContentType(true).get();
-        System.out.println(document);
+//        Document document = Jsoup.connect("https://yaoyao.dynv6.net/onedrive/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E5%86%99%E7%9C%9F/A").ignoreContentType(true).post();
+//        System.out.println(document);
 
     }
 //    public void text() throws IOException {

@@ -24,12 +24,12 @@ public class OptionPool {
     /**
      * 每日更新
      */
-    @Scheduled(fixedRate = 8640000L)
-//    @Scheduled(cron = "0 0 3 * * ?")
+//    @Scheduled(fixedRate = 8640000L)
+    @Scheduled(cron = "0 0 3 * * ?")
     public void setPool() {
         ExecutorService pool = EXecutorPool.getExecutorService();
 //       pool.submit(new Option("https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/Artgravia/"));
-        pool.submit(new Option(tableMapper, "https://yaoyao.dynv6.net/onedrive/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E5%86%99%E7%9C%9F/"));
+        pool.submit(new Option(tableMapper, "https://yaoyao.dynv6.net/onedrive/杂七杂八/写真/"));
         String top_url = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/";
         String top_url_two = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn2/";
         for (String xs : sx) {
@@ -37,7 +37,7 @@ public class OptionPool {
                 continue;
             }
             pool.submit(new Option(tableMapper, top_url + xs + "/"));
-//            pool.submit(new Option(tableMapper, top_url_two + xs + "/"));
+            pool.submit(new Option(tableMapper, top_url_two + xs + "/"));
         }
     }
 
