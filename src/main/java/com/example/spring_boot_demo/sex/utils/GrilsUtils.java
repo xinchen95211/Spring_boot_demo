@@ -19,8 +19,10 @@ import java.util.Map;
  * 工具类
  */
 public class GrilsUtils {
-    @Autowired
-    private static LogerMapper logerMapper;
+
+
+    public static LogerMapper logerMapper;
+
 
     /**
      * 传入一个连接，尝试访问100次后未访问成功则抛出错误
@@ -39,10 +41,10 @@ public class GrilsUtils {
     public static Document Accessor(String url, int count) {
         Document parse = null;
         try {
-            parse = Jsoup.parse(new URL(url), 8000);
+            parse = Jsoup.parse(new URL(url), 10000);
         } catch (Exception e) {
-            if (count >= 100) {
-                logerMapper.add(url + "访问一百次出错了,错误原因为" + e);
+            if (count >= 300) {
+                logerMapper.add(url + "访问三百次出错了,错误原因为" + e);
                 return null;
             }
             return Accessor(url, ++count);

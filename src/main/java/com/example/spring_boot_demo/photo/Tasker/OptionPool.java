@@ -39,15 +39,19 @@ public class OptionPool {
         String top_url_two = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn2/";
 
         Document accessor2 = GrilsUtils.Accessor(top_url_two);
+        if (accessor2 != null){
         Elements tbody_a2 = accessor2.select("tbody td a");
         for (Element element : tbody_a2) {
             pool.submit(new Option(tableMapper, top_url_two + element.text() + "/"));
         }
+        }
 
         Document accessor = GrilsUtils.Accessor(top_url);
-        Elements tbody_a = accessor.select("tbody td a");
-        for (Element element : tbody_a) {
-            pool.submit(new Option(tableMapper, top_url + element.text() + "/"));
+        if (accessor != null) {
+            Elements tbody_a = accessor.select("tbody td a");
+            for (Element element : tbody_a) {
+                pool.submit(new Option(tableMapper, top_url + element.text() + "/"));
+            }
         }
 
     }

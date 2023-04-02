@@ -8,6 +8,7 @@ import com.example.spring_boot_demo.photo.Dao.TableMapper;
 import com.example.spring_boot_demo.photo.DoMain.PhotoTable;
 import com.example.spring_boot_demo.photo.config.EXecutorPool;
 import com.example.spring_boot_demo.photo.services.Table_Services;
+import com.example.spring_boot_demo.photo.utils.PhotoUtils;
 import com.example.spring_boot_demo.sex.Dao.GirlsMapper;
 import com.example.spring_boot_demo.sex.Dao.NineOneMapper;
 import com.example.spring_boot_demo.sex.Dao.OneMapper;
@@ -28,8 +29,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 public class SpringBootDemoApplicationTests {
@@ -40,6 +43,7 @@ public class SpringBootDemoApplicationTests {
     private GirlsMapper girlsMapper;
     @Autowired
     private TableMapper tableMapper;
+
     @Autowired
     private Table_Services tableservices;
 
@@ -132,50 +136,28 @@ public class SpringBootDemoApplicationTests {
     }
     @Test
     public void jsouptext() throws IOException {
-//  ex
-        ExecutorService executorService = EXecutorPool.getExecutorService();
-        String top_url = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/";
-        Document parse = Jsoup.parse(new URL(top_url), 3000);
-        Elements tbody_a = parse.select("tbody td a");
-        for (Element element : tbody_a) {
-            System.out.println(element.text());
-        }
-        System.out.println(tbody_a.size());
-//        LambdaQueryWrapper<PhotoTable> qw = new LambdaQueryWrapper<>();
-//        qw.eq(PhotoTable::getName,"");
-//        qw.eq(PhotoTable::getTable_name,"photo");
-//        Long count = tableMapper.selectCount(qw);
-//        System.out.println(count);
+        IPage photo = tableservices.paging(12, "photo", "");
+        List<PhotoTable> records = photo.getRecords();
+        List<PhotoTable> collect = records.stream().map((item) -> {
+            String thumbnail = item.getThumbnail();
+            try {
+                    URL u = new URL(thumbnail);
+                    InputStream inputStream = u.openConnection().getInputStream();
+                    byte[] bytes = inputStream.readAllBytes();
+                    String s = "data:image/png;base64," + Base64.getEncoder().encodeToString(bytes);
+                    item.setThumbnail(s);
+                return item;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList());
 
-//        Document document = Jsoup.connect("https://yaoyao.dynv6.net/onedrive/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E5%86%99%E7%9C%9F/A").ignoreContentType(true).post();
-//        System.out.println(document);
-
+        photo.setRecords(collect);
+        String s = PhotoUtils.map_str(photo);
+        File file = new File("a.json");
+        System.out.println(file.getAbsolutePath());
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
+       bufferedWriter.write(s);
+       bufferedWriter.close();
     }
-//    public void text() throws IOException {
-//
-//        BufferedReader fileReader = new BufferedReader(new FileReader("/Users/super/IdeaProjects/Spring_boot_demo/src/main/resources/q.txt"));
-//
-//        String name = "";
-//        while ((name = fileReader.readLine()) != null){
-//            LambdaQueryWrapper<PhotoTable> lam = new LambdaQueryWrapper<>();
-//            lam.eq(PhotoTable::getName,name);
-//            Long aLong = tableMapper.selectCount(lam);
-//            if (aLong > 1){
-//                List<PhotoTable> photoTables = tableMapper.selectList(lam);
-//                for (int i = 0; i < photoTables.size(); i++) {
-//                    if (i == 0){
-//                        continue;
-//                    }
-//                    tableMapper.deleteById(photoTables.get(i));
-//                }
-//            }
-//
-//
-//
-//        }
-//
-//
-//
-//
-//    }
 }

@@ -166,6 +166,7 @@
 </div>
 <script>
     new Vue({
+
         el: "#app",
         data() {
             return {
@@ -175,13 +176,13 @@
                 //导航页数据
                 tables: '',
                 //图片展示数据
-                img_list: '',
+                img_list: [],
                 //当前页码
                 currentPage: 1,
                 //总数
-                totalCount: 123,
+                totalCount: 533,
                 //总页码
-                totalPage: 5,
+                totalPage: 23,
                 //搜索的内容
                 search: '',
                 //当前页面的内容
@@ -197,8 +198,8 @@
             }
         },
         created() {
+            this.ccc();
             this.table();
-            this.imglist();
         },
         methods: {
             imgload(i) {
@@ -218,12 +219,12 @@
                 axios.get("https://1234560.dynv6.net/photo/" + id).then(function (res) {
                     _this.urls = res.data.collection;
 
-                    console.log(res.data)
                     _this.prefix = res.data.prefix;
                     _this.suffix = res.data.suffix;
 
                     for (let i = 0; i < res.data.collection.length; i++) {
                         _this.srcList[i] = res.data.prefix + res.data.suffix + "/" + res.data.collection[i]
+
                     }
                 }).catch(function (error) {
                         console.log("error" + error)
@@ -267,7 +268,6 @@
                     "row": _this.currentPage
                 }).then(function (res) {
                     _this.img_list = res.data.records;
-                    console.log(_this.img_list)
                     _this.totalCount = res.data.total;
                     _this.totalPage = res.data.pages;
                     _this.rows = res.data.current;
@@ -279,6 +279,11 @@
                     }
                 )
             },
+            ccc(){
+                axios.get("./js/a.json").then((res)=>{
+                    this.img_list = res.data;
+                })
+            }
 
 
         },
