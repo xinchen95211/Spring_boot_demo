@@ -35,7 +35,7 @@ public class OptionPool {
     public void setPool() {
         ExecutorService pool = EXecutorPool.getExecutorService();
         pool.submit(new Option(tableMapper, "https://yaoyao.dynv6.net/onedrive/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E5%86%99%E7%9C%9F/"));
-        String top_url = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/";
+//        String top_url = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/"; 废弃
         String top_url_two = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn2/";
 
         Document accessor2 = GrilsUtils.Accessor(top_url_two);
@@ -46,13 +46,13 @@ public class OptionPool {
         }
         }
 
-        Document accessor = GrilsUtils.Accessor(top_url);
-        if (accessor != null) {
-            Elements tbody_a = accessor.select("tbody td a");
-            for (Element element : tbody_a) {
-                pool.submit(new Option(tableMapper, top_url + element.text() + "/"));
-            }
-        }
+//        Document accessor = GrilsUtils.Accessor(top_url);
+//        if (accessor != null) {
+//            Elements tbody_a = accessor.select("tbody td a");
+//            for (Element element : tbody_a) {
+//                pool.submit(new Option(tableMapper, top_url + element.text() + "/"));
+//            }废弃
+//        }
 
     }
 

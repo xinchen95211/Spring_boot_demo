@@ -27,7 +27,7 @@ public class JpmnTasker {
     private LogerMapper logerMapper;
     private ExecutorService executorService = EXecutorPool.getExecutorService();
 
-    //    @Scheduled(fixedRate = 8640000L)
+//        @Scheduled(fixedRate = 8640000L)
     @Scheduled(cron = "0 20 22 * * ?")
     public void r() {
 //        logerMapper.add("程序开始运行了");
@@ -60,8 +60,6 @@ public class JpmnTasker {
                 page = random.nextInt(3, page + 1);
                 System.out.println(table_name + page);
             }
-
-
             for (int i = 1; i <= page; i++) {
                 String url = top_url + href;
                 if (i != 1) {

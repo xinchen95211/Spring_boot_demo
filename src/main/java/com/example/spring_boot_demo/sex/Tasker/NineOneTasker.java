@@ -81,13 +81,7 @@ public class NineOneTasker {
         for (Map.Entry<String, String> entry : entries) {
             String value = entry.getValue();
             String s = value.replace(".m3u8", "").replace(".mp4", "");
-            boolean add = add(s);
-            System.out.print(s);
-            if (add) {
-                System.out.println("添加成功");
-            } else {
-                System.out.println("添加失败");
-            }
+            add(s);
         }
     }
 }

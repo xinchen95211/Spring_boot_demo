@@ -80,13 +80,7 @@ public class OneTasker {
         Set<Map.Entry<String, String>> entries = show.entrySet();
         for (Map.Entry<String, String> entry : entries) {
             String value = entry.getValue();
-            System.out.print(value);
-            boolean add = add(value);
-            if (add) {
-                System.out.println("添加成功");
-            } else {
-                System.out.println("添加失败");
-            }
+           add(value);
         }
     }
 }
