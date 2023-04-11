@@ -3,6 +3,7 @@ package com.example.spring_boot_demo.sex.utils;
 import com.example.spring_boot_demo.sex.Dao.LogerMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,6 +19,7 @@ import java.util.Map;
 /**
  * 工具类
  */
+@Slf4j
 public class GrilsUtils {
 
 
@@ -25,7 +27,7 @@ public class GrilsUtils {
 
 
     /**
-     * 传入一个连接，尝试访问100次后未访问成功则抛出错误
+     * 传入一个连接，尝试访问200次后未访问成功则抛出错误
      */
     public static Document Accessor(String url) {
         Document parse = null;
@@ -39,12 +41,17 @@ public class GrilsUtils {
     }
 
     public static Document Accessor(String url, int count) {
+        try {
+            log.error("访问发生错误，线程将休眠15s");
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+        }
         Document parse = null;
         try {
             parse = Jsoup.parse(new URL(url), 10000);
         } catch (Exception e) {
-            if (count >= 300) {
-                logerMapper.add(url + "访问三百次出错了,错误原因为" + e);
+            if (count >= 200) {
+                logerMapper.add(url + "访问两百次出错了,错误原因为" + e);
                 return null;
             }
             return Accessor(url, ++count);
