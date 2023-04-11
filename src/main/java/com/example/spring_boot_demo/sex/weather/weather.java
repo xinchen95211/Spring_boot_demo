@@ -8,9 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@Configuration
+//@Configuration
+@Deprecated
 public class weather {
-    @Value("${weather.key}")
+//    @Value("${weather.key}")
     private static String key;
 
     private static String nowapi = "https://devapi.qweather.com/v7/weather/now?location=101020300&key="+key;

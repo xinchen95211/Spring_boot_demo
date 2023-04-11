@@ -14,9 +14,10 @@ import java.io.IOException;
 
 
 //微信消息推送
+@Deprecated
 public class wehook_msg {
 
-    @Value("${wx.wehook}")
+//    @Value("${wx.wehook}")
     private static String wehook;
     private String msg;
 
