@@ -57,6 +57,7 @@ public class Option implements Runnable {
         Document post_a = null;
         do {
             post_a = post(prefix, page);
+
             Element tr1 = post_a.getElementById("tr1");
             if (tr1 == null) {
                 break;
@@ -69,7 +70,17 @@ public class Option implements Runnable {
                     LambdaQueryWrapper<PhotoTable> qw = new LambdaQueryWrapper<>();
                     qw.eq(PhotoTable::getName,name);
                     qw.eq(PhotoTable::getTable_name,namesd);
-                    PhotoTable photoTablesf = tableMapper.selectOne(qw);
+                    PhotoTable photoTablesf = null;
+                    try {
+                        photoTablesf = tableMapper.selectOne(qw);
+                    } catch (Exception e) {
+                        try {
+                            log.error("查询数据库出错，30s后将重试");
+                            Thread.sleep(30000);
+                        } catch (InterruptedException ex) {
+                            photoTablesf = tableMapper.selectOne(qw);
+                        }
+                    }
 
                     if (photoTablesf == null) {
                         String namepath = element.attr("href").replace("/", "");
@@ -137,7 +148,14 @@ public class Option implements Runnable {
         try {
             parse = Jsoup.connect(url).postDataCharset("utf-8").data("pagenum", String.valueOf(page)).post();
         } catch (IOException e) {
-            return post(url, page);
+            try {
+                log.error("发生错误了，将休眠20s");
+                Thread.sleep(20000);
+
+                return post(url, page);
+            } catch (InterruptedException ex) {
+
+            }
         }
         return parse;
     }

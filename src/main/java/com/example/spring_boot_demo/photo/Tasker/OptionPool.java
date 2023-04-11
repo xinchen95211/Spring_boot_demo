@@ -17,9 +17,11 @@ import java.util.concurrent.ExecutorService;
 
 
 @Configuration
+
 public class OptionPool {
     private final TableMapper tableMapper;
     private final Table_Services table_services;
+    ExecutorService pool = EXecutorPool.getExecutorService();
     String[] sx = new String[]{"Aiyouwu", "Artgravia", "BoLoli", "Candy", "Cosplay", "DJAWA", "DKGirl", "FeiLin", "Gangtaimeinv", "Girlt", "Guochanmeinv", "Huayan", "HuaYang", "IMiss", "LEGBABY", "LeYuan", "MFStar", "Micat", "MiiTao", "MintYe", "MissLeg", "MiStar", "Mtcos", "Mtmeng", "MyGirl", "Neiyiyouwu", "Oumeimeinv", "Pdl", "Rihanmeinv", "Siwameitui", "Slady", "Taste", "Tgod", "TouTiao", "Tuigirl", "Tukmo", "Ugirls", "Uxing", "WingS", "Xgyw", "XiaoYu", "XingYan", "Xiuren", "YaoJingShe", "Yituyu", "YouMei", "YouMi", "YouWu", "Ysweb", "photo"};
 
     public OptionPool(TableMapper tableMapper, Table_Services table_services) {
@@ -31,20 +33,11 @@ public class OptionPool {
      * 每日更新
      */
 //    @Scheduled(fixedRate = 8640000L)
-    @Scheduled(cron = "0 0 3 * * ?")
-    public void setPool() {
-        ExecutorService pool = EXecutorPool.getExecutorService();
+    @Scheduled(cron = "0 30 2 * * ?")
+    public void setPoolf() {
+
         pool.submit(new Option(tableMapper, "https://yaoyao.dynv6.net/onedrive/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/%E5%86%99%E7%9C%9F/"));
 //        String top_url = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn/"; 废弃
-        String top_url_two = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn2/";
-
-        Document accessor2 = GrilsUtils.Accessor(top_url_two);
-        if (accessor2 != null){
-        Elements tbody_a2 = accessor2.select("tbody td a");
-        for (Element element : tbody_a2) {
-            pool.submit(new Option(tableMapper, top_url_two + element.text() + "/"));
-        }
-        }
 
 //        Document accessor = GrilsUtils.Accessor(top_url);
 //        if (accessor != null) {
@@ -53,7 +46,18 @@ public class OptionPool {
 //                pool.submit(new Option(tableMapper, top_url + element.text() + "/"));
 //            }废弃
 //        }
-
+    }
+//        @Scheduled(fixedRate = 8640000L)
+    @Scheduled(cron = "0 30 3 * * ?")
+    public void setPools(){
+        String top_url_two = "https://yaoyao.dynv6.net/onedriveyaoyao/jpmn2/";
+        Document accessor2 = GrilsUtils.Accessor(top_url_two);
+        if (accessor2 != null){
+            Elements tbody_a2 = accessor2.select("tbody td a");
+            for (Element element : tbody_a2) {
+                pool.submit(new Option(tableMapper, top_url_two + element.text() + "/"));
+            }
+        }
     }
 
     /**
