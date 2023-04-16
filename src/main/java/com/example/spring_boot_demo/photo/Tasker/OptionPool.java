@@ -1,27 +1,24 @@
 package com.example.spring_boot_demo.photo.Tasker;
 
 import com.example.spring_boot_demo.photo.Dao.TableMapper;
-import com.example.spring_boot_demo.photo.config.EXecutorPool;
+import com.example.spring_boot_demo.photo.config.PhotoRequestExecutorService;
 import com.example.spring_boot_demo.photo.services.Table_Services;
 import com.example.spring_boot_demo.photo.utils.Option;
 import com.example.spring_boot_demo.sex.utils.GrilsUtils;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.net.URL;
 import java.util.concurrent.ExecutorService;
 
 
 @Configuration
-
 public class OptionPool {
     private final TableMapper tableMapper;
     private final Table_Services table_services;
-    ExecutorService pool = EXecutorPool.getExecutorService();
+    ExecutorService pool = PhotoRequestExecutorService.getExecutorService();
     String[] sx = new String[]{"Aiyouwu", "Artgravia", "BoLoli", "Candy", "Cosplay", "DJAWA", "DKGirl", "FeiLin", "Gangtaimeinv", "Girlt", "Guochanmeinv", "Huayan", "HuaYang", "IMiss", "LEGBABY", "LeYuan", "MFStar", "Micat", "MiiTao", "MintYe", "MissLeg", "MiStar", "Mtcos", "Mtmeng", "MyGirl", "Neiyiyouwu", "Oumeimeinv", "Pdl", "Rihanmeinv", "Siwameitui", "Slady", "Taste", "Tgod", "TouTiao", "Tuigirl", "Tukmo", "Ugirls", "Uxing", "WingS", "Xgyw", "XiaoYu", "XingYan", "Xiuren", "YaoJingShe", "Yituyu", "YouMei", "YouMi", "YouWu", "Ysweb", "photo"};
 
     public OptionPool(TableMapper tableMapper, Table_Services table_services) {

@@ -1,37 +1,26 @@
 package com.example.spring_boot_demo;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.spring_boot_demo.photo.Dao.TableMapper;
 import com.example.spring_boot_demo.photo.DoMain.PhotoTable;
-import com.example.spring_boot_demo.photo.config.EXecutorPool;
 import com.example.spring_boot_demo.photo.services.Table_Services;
 import com.example.spring_boot_demo.photo.utils.PhotoUtils;
 import com.example.spring_boot_demo.sex.Dao.GirlsMapper;
 import com.example.spring_boot_demo.sex.Dao.NineOneMapper;
 import com.example.spring_boot_demo.sex.Dao.OneMapper;
 import com.example.spring_boot_demo.sex.DoMain.OneUrl;
-import com.example.spring_boot_demo.sex.weather.WeatherUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.utils.HttpClientUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 @SpringBootTest

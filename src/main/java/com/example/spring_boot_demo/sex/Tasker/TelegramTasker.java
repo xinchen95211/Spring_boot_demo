@@ -1,7 +1,9 @@
 package com.example.spring_boot_demo.sex.Tasker;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.spring_boot_demo.sex.Dao.OneMapper;
 import com.example.spring_boot_demo.sex.DoMain.OneUrl;
+import com.example.spring_boot_demo.sex.DoMain.TelegramPOJO;
 import com.example.spring_boot_demo.sex.Services.TelegramServices;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,17 +20,19 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 @Configuration
-public class OneTasker {
-    @Autowired
-    private OneMapper oneMapper;
+public class TelegramTasker {
     @Autowired
     private TelegramServices telegramServices;
-
-    //    @Scheduled(fixedRate = 8640000L)
-    @Scheduled(cron = "* 30 5 * * ?")
+//        @Scheduled(fixedRate = 8640000L)
+    @Scheduled(cron = "* 30 20 * * ?")
     public void task() {
-        red("https://yaoyao.dynv6.net/onedriveyaoyao/Aria2/");
-        red("https://yaoyao.dynv6.net/huifaguang/Aria2/");
+        System.out.println("线程准备运行");
+        red("https://yaoyao.dynv6.net/onedriveyaoyao/Telegram/");
+        red("https://yaoyao.dynv6.net/onedriveyaoyao/right/");
+        red("https://yaoyao.dynv6.net/Telegram/Telegram/");
+        red("https://yaoyao.dynv6.net/onedrive/91video/");
+        red("https://yaoyao.dynv6.net/onedriveyaoyao/91_urlvideo/");
+        red("https://yaoyao.dynv6.net/onedriveyaoyao/91_video/");
     }
 
 
@@ -74,15 +78,15 @@ public class OneTasker {
         return Map;
     }
 
-    public boolean add(String url) {
-
-
-        List<OneUrl> oneUrl = oneMapper.select_for_name(url);
-        if (oneUrl == null || oneUrl.size() == 0) {
-            oneMapper.add(url);
-            return true;
+    public void add(String url) {
+        LambdaQueryWrapper<TelegramPOJO> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(TelegramPOJO::getName, url);
+        TelegramPOJO one = telegramServices.getOne(lambdaQueryWrapper);
+        if (one == null){
+            TelegramPOJO telegramPOJO = new TelegramPOJO();
+            telegramPOJO.setName(url);
+            telegramServices.save(telegramPOJO);
         }
-        return false;
     }
 
     public void red(String st) {
@@ -92,5 +96,12 @@ public class OneTasker {
             String value = entry.getValue();
            add(value);
         }
+    }
+    public void reds(String st) {
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(st);
+        }
+
+
     }
 }

@@ -1,6 +1,6 @@
 package com.example.spring_boot_demo.sex.Tasker;
 
-import com.example.spring_boot_demo.photo.config.EXecutorPool;
+import com.example.spring_boot_demo.photo.config.PhotoRequestExecutorService;
 import com.example.spring_boot_demo.sex.Dao.GirlsMapper;
 import com.example.spring_boot_demo.sex.Dao.LogerMapper;
 import com.example.spring_boot_demo.sex.utils.GrilsUtils;
@@ -25,7 +25,7 @@ public class JpmnTasker {
     private GirlsMapper girlsMapper;
     @Autowired
     private LogerMapper logerMapper;
-    private ExecutorService executorService = EXecutorPool.getExecutorService();
+    private ExecutorService executorService = PhotoRequestExecutorService.getExecutorService();
 
 //        @Scheduled(fixedRate = 8640000L)
     @Scheduled(cron = "0 20 22 * * ?")

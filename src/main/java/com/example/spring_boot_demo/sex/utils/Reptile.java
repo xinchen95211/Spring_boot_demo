@@ -163,7 +163,7 @@ public class Reptile implements Runnable {
             if (count != 0) {
                 accessor = GrilsUtils.Accessor(url + "_" + count + ".html");
             }
-            if ("访问页面出错了".equals(accessor.title())) {
+            if ("访问页面出错了".equals(accessor.title()) || accessor.title().contains("找不到文件或目录") || "404 - 找不到文件或目录。".equals(accessor.title())) {
                 break;
             }
             Elements selects = accessor.select("article img");

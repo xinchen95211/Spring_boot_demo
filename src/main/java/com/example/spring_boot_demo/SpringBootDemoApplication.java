@@ -1,7 +1,7 @@
 package com.example.spring_boot_demo;
 
 
-import com.example.spring_boot_demo.photo.config.EXecutorPool;
+import com.example.spring_boot_demo.photo.config.PhotoRequestExecutorService;
 import com.example.spring_boot_demo.sex.Dao.LogerMapper;
 import com.example.spring_boot_demo.sex.utils.GrilsUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +30,10 @@ public class SpringBootDemoApplication {
     }
     //定时更新任务 1小时一次
 
-    @Scheduled(fixedRate = 3600000L)
+    @Scheduled(fixedRate = 10000L)
     public void th(){
         GrilsUtils.logerMapper = this.logerMapper;
-        ExecutorService pool = EXecutorPool.getExecutorService();
+        ExecutorService pool = PhotoRequestExecutorService.getExecutorService();
         log.warn(pool.toString());
 }
 

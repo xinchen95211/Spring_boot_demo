@@ -40,6 +40,11 @@ public class NineOneTasker {
             try {
                 parse = Jsoup.connect(str).postDataCharset("utf-8").data("pagenum", String.valueOf(page)).post();
             } catch (Exception e) {
+                try {
+                    Thread.sleep(15000);
+                } catch (InterruptedException ex) {
+                    continue;
+                }
                 continue;
             }
             Element tr1 = parse.getElementById("tr1");
